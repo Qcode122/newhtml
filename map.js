@@ -49,6 +49,12 @@ var month_lengths = {
     }
     /*--------------------------------*/
 
+async function rel() {
+    setTimeout(() => {
+        document.location.reload();
+    }, 30000);
+}
+
 /* Getting the graph from the json data */
 async function getchart() {
 
@@ -81,6 +87,7 @@ async function getjsondata() {
     state = await fetch('https://covid.ourworldindata.org/data/owid-covid-data.json');
     data = await state.json();
 }
+
 
 /* Getting the country iso code from the csv file*/
 async function getCountryisocode() {
@@ -129,12 +136,16 @@ async function getmonthnewcases() {
     await getCountry();
 
     var date_lists = data[isocount]['data'].length;
+    var date_l = data[isocount]['data'];
     for (let i = 0; i < 12; i++) {
         for (var z = listy[i]; z < listy[i + 1]; z++) {
             var lis = data[isocount]['data'][listy[i]];
             if (data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
                 sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
                 tt_list[i] = sumy;
+                if (z == date_lists - 1) {
+                    break;
+                }
             }
         }
     }
