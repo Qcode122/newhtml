@@ -44,32 +44,15 @@ var month_lengths = {
 };
 /*--------------------------------*/
 
-function rel() {
-  return regeneratorRuntime.async(function rel$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          setTimeout(function () {
-            document.location.reload();
-          }, 30000);
-
-        case 1:
-        case "end":
-          return _context.stop();
-      }
-    }
-  });
-}
 /* Getting the graph from the json data */
-
 
 function getchart() {
   var ctx, mychart;
-  return regeneratorRuntime.async(function getchart$(_context2) {
+  return regeneratorRuntime.async(function getchart$(_context) {
     while (1) {
-      switch (_context2.prev = _context2.next) {
+      switch (_context.prev = _context.next) {
         case 0:
-          _context2.next = 2;
+          _context.next = 2;
           return regeneratorRuntime.awrap(getmonthnewcases());
 
         case 2:
@@ -96,7 +79,7 @@ function getchart() {
 
         case 4:
         case "end":
-          return _context2.stop();
+          return _context.stop();
       }
     }
   });
@@ -105,24 +88,194 @@ function getchart() {
 
 
 function getjsondata() {
-  return regeneratorRuntime.async(function getjsondata$(_context3) {
+  return regeneratorRuntime.async(function getjsondata$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return regeneratorRuntime.awrap(fetch('https://covid.ourworldindata.org/data/owid-covid-data.json'));
+
+        case 2:
+          state = _context2.sent;
+          _context2.next = 5;
+          return regeneratorRuntime.awrap(state.json());
+
+        case 5:
+          data = _context2.sent;
+
+        case 6:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
+}
+/* Getting the country iso code from the csv file*/
+
+
+function getCountryisocode() {
+  var country_iso, country, countrycsv, i, _i;
+
+  return regeneratorRuntime.async(function getCountryisocode$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
           _context3.next = 2;
-          return regeneratorRuntime.awrap(fetch('https://covid.ourworldindata.org/data/owid-covid-data.json'));
+          return regeneratorRuntime.awrap(fetch("countryiso.csv"));
 
         case 2:
-          state = _context3.sent;
+          country_iso = _context3.sent;
           _context3.next = 5;
-          return regeneratorRuntime.awrap(state.json());
+          return regeneratorRuntime.awrap(country_iso.text());
 
         case 5:
-          data = _context3.sent;
+          country = _context3.sent;
+          countrycsv = country.split("\n").slice(1);
 
-        case 6:
+          for (i = 0; i < 246; i++) {
+            countries[i] = countrycsv;
+          }
+
+          for (_i = 0; _i < 246; _i++) {
+            table_country[_i] = countries[0][_i].split(',');
+            isocodes[table_country[_i][2]] = table_country[_i][0];
+          }
+
+        case 9:
         case "end":
           return _context3.stop();
+      }
+    }
+  });
+}
+/* Iterating the countries iso code into a variable
+to be used in the code*/
+
+
+function getCountry() {
+  var v;
+  return regeneratorRuntime.async(function getCountry$(_context4) {
+    while (1) {
+      switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.next = 2;
+          return regeneratorRuntime.awrap(getCountryisocode());
+
+        case 2:
+          html_country = document.getElementById('count').value;
+
+          for (v in isocodes) {
+            if (html_country == isocodes[v]) {
+              isocount = v;
+            }
+          }
+
+        case 4:
+        case "end":
+          return _context4.stop();
+      }
+    }
+  });
+}
+
+var listy = [];
+var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+function getmonthsum() {
+  var resum, i;
+  return regeneratorRuntime.async(function getmonthsum$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          resum = 0;
+
+          for (i = 0; i < 12; i++) {
+            resum = resum + mont[i];
+            listy[i] = resum;
+          }
+
+        case 2:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  });
+}
+/*Getting the value of the total test cases for each country*/
+
+
+var sumy = 0;
+var tt_list = [];
+
+function getmonthnewcases() {
+  var date_lists, date_l, i, z, lis;
+  return regeneratorRuntime.async(function getmonthnewcases$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(getjsondata());
+
+        case 2:
+          _context6.next = 4;
+          return regeneratorRuntime.awrap(getmonthsum());
+
+        case 4:
+          _context6.next = 6;
+          return regeneratorRuntime.awrap(getCountry());
+
+        case 6:
+          date_lists = data[isocount]['data'].length;
+          date_l = data[isocount]['data'];
+          i = 0;
+
+        case 9:
+          if (!(i < 12)) {
+            _context6.next = 24;
+            break;
+          }
+
+          z = listy[i];
+
+        case 11:
+          if (!(z < listy[i + 1])) {
+            _context6.next = 21;
+            break;
+          }
+
+          lis = date_l[listy[i]];
+
+          if (!(date_l[listy[i]]['total_cases_per_million'] in lis)) {
+            _context6.next = 18;
+            break;
+          }
+
+          sumy = sumy + date_l[listy[i]]['total_cases_per_million'];
+          tt_list[i] = sumy;
+
+          if (!(z == date_lists - 1)) {
+            _context6.next = 18;
+            break;
+          }
+
+          return _context6.abrupt("break", 21);
+
+        case 18:
+          z++;
+          _context6.next = 11;
+          break;
+
+        case 21:
+          i++;
+          _context6.next = 9;
+          break;
+
+        case 24:
+          console.log(tt_list);
+
+        case 25:
+        case "end":
+          return _context6.stop();
       }
     }
   });
@@ -178,73 +331,6 @@ var obb;
     insel = getopt.options[getopt.selectedIndex].textContent;
 }*/
 
-/* Getting the country iso code from the csv file*/
-
-
-function getCountryisocode() {
-  var country_iso, country, countrycsv, i, _i;
-
-  return regeneratorRuntime.async(function getCountryisocode$(_context4) {
-    while (1) {
-      switch (_context4.prev = _context4.next) {
-        case 0:
-          _context4.next = 2;
-          return regeneratorRuntime.awrap(fetch("countryiso.csv"));
-
-        case 2:
-          country_iso = _context4.sent;
-          _context4.next = 5;
-          return regeneratorRuntime.awrap(country_iso.text());
-
-        case 5:
-          country = _context4.sent;
-          countrycsv = country.split("\n").slice(1);
-
-          for (i = 0; i < 246; i++) {
-            countries[i] = countrycsv;
-          }
-
-          for (_i = 0; _i < 246; _i++) {
-            table_country[_i] = countries[0][_i].split(',');
-            isocodes[table_country[_i][2]] = table_country[_i][0];
-          }
-
-        case 9:
-        case "end":
-          return _context4.stop();
-      }
-    }
-  });
-}
-/* Iterating the countries iso code into a variable
-to be used in the code*/
-
-
-function getCountry() {
-  var v;
-  return regeneratorRuntime.async(function getCountry$(_context5) {
-    while (1) {
-      switch (_context5.prev = _context5.next) {
-        case 0:
-          _context5.next = 2;
-          return regeneratorRuntime.awrap(getCountryisocode());
-
-        case 2:
-          html_country = document.getElementById('count').value;
-
-          for (v in isocodes) {
-            if (html_country == isocodes[v]) {
-              isocount = v;
-            }
-          }
-
-        case 4:
-        case "end":
-          return _context5.stop();
-      }
-    }
-  });
-}
 /* Getting the total test case for each month from the json api*/
 
 /*var total_month_dict = {}
@@ -271,121 +357,3 @@ async function sumtotaltestmonth() {
     }
     show_sum = sum_month;
 }*/
-
-
-var listy = [];
-var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-function getmonthsum() {
-  var resum, i;
-  return regeneratorRuntime.async(function getmonthsum$(_context6) {
-    while (1) {
-      switch (_context6.prev = _context6.next) {
-        case 0:
-          resum = 0;
-
-          for (i = 0; i < 12; i++) {
-            resum = resum + mont[i];
-            listy[i] = resum;
-          }
-
-          console.log(listy);
-
-        case 3:
-        case "end":
-          return _context6.stop();
-      }
-    }
-  });
-}
-/*Getting the value of the total test cases for each country*/
-
-
-var sumy = 0;
-var tt_list = [];
-
-function getmonthnewcases() {
-  var date_lists, date_l, i, z, lis;
-  return regeneratorRuntime.async(function getmonthnewcases$(_context7) {
-    while (1) {
-      switch (_context7.prev = _context7.next) {
-        case 0:
-          _context7.next = 2;
-          return regeneratorRuntime.awrap(getjsondata());
-
-        case 2:
-          _context7.next = 4;
-          return regeneratorRuntime.awrap(getmonthsum());
-
-        case 4:
-          _context7.next = 6;
-          return regeneratorRuntime.awrap(getCountry());
-
-        case 6:
-          date_lists = data[isocount]['data'].length;
-          date_l = data[isocount]['data'];
-          i = 0;
-
-        case 9:
-          if (!(i < 12)) {
-            _context7.next = 28;
-            break;
-          }
-
-          z = listy[i];
-
-        case 11:
-          if (!(z < listy[i + 1])) {
-            _context7.next = 25;
-            break;
-          }
-
-          lis = data[isocount]['data'][listy[i]];
-
-          if (!(data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
-            _context7.next = 20;
-            break;
-          }
-
-          sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
-          tt_list[i] = sumy;
-
-          if (!(z == date_lists - 1)) {
-            _context7.next = 18;
-            break;
-          }
-
-          return _context7.abrupt("break", 25);
-
-        case 18:
-          _context7.next = 22;
-          break;
-
-        case 20:
-          if (!(!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
-            _context7.next = 22;
-            break;
-          }
-
-          return _context7.abrupt("continue", 22);
-
-        case 22:
-          z++;
-          _context7.next = 11;
-          break;
-
-        case 25:
-          i++;
-          _context7.next = 9;
-          break;
-
-        case 28:
-          console.log(tt_list);
-
-        case 29:
-        case "end":
-          return _context7.stop();
-      }
-    }
-  });
-}

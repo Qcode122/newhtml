@@ -49,12 +49,6 @@ var month_lengths = {
     }
     /*--------------------------------*/
 
-async function rel() {
-    setTimeout(() => {
-        document.location.reload();
-    }, 30000);
-}
-
 /* Getting the graph from the json data */
 async function getchart() {
 
@@ -86,6 +80,70 @@ async function getchart() {
 async function getjsondata() {
     state = await fetch('https://covid.ourworldindata.org/data/owid-covid-data.json');
     data = await state.json();
+}
+
+
+/* Getting the country iso code from the csv file*/
+async function getCountryisocode() {
+    const country_iso = await fetch("countryiso.csv");
+    const country = await country_iso.text();
+    const countrycsv = country.split("\n").slice(1);
+    for (let i = 0; i < 246; i++) {
+        countries[i] = countrycsv;
+    }
+    for (let i = 0; i < 246; i++) {
+        table_country[i] = countries[0][i].split(',')
+        isocodes[table_country[i][2]] = table_country[i][0];
+    }
+}
+/* Iterating the countries iso code into a variable
+to be used in the code*/
+async function getCountry() {
+    await getCountryisocode();
+
+    html_country = document.getElementById('count').value;
+    for (var v in isocodes) {
+        if (html_country == isocodes[v]) {
+            isocount = v;
+        }
+    }
+}
+
+var listy = [];
+var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+async function getmonthsum() {
+    var resum = 0;
+    for (let i = 0; i < 12; i++) {
+        resum = resum + mont[i];
+        listy[i] = resum
+    }
+}
+
+/*Getting the value of the total test cases for each country*/
+var sumy = 0;
+var tt_list = [];
+async function getmonthnewcases() {
+
+    /*await changemonthlengths();*/
+    await getjsondata();
+    await getmonthsum();
+    await getCountry();
+
+    var date_lists = data[isocount]['data'].length;
+    var date_l = data[isocount]['data'];
+    for (let i = 0; i < 12; i++) {
+        for (var z = listy[i]; z < listy[i + 1]; z++) {
+            var lis = date_l[listy[i]];
+            if (date_l[listy[i]]['total_cases_per_million'] in lis) {
+                sumy = sumy + date_l[listy[i]]['total_cases_per_million'];
+                tt_list[i] = sumy;
+                if (z == date_lists - 1) {
+                    break;
+                }
+            }
+        }
+    }
+    console.log(tt_list);
 }
 
 /* Get value from the api */
@@ -135,32 +193,6 @@ var obb;
     insel = getopt.options[getopt.selectedIndex].textContent;
 }*/
 
-/* Getting the country iso code from the csv file*/
-async function getCountryisocode() {
-    const country_iso = await fetch("countryiso.csv");
-    const country = await country_iso.text();
-    const countrycsv = country.split("\n").slice(1);
-    for (let i = 0; i < 246; i++) {
-        countries[i] = countrycsv;
-    }
-    for (let i = 0; i < 246; i++) {
-        table_country[i] = countries[0][i].split(',')
-        isocodes[table_country[i][2]] = table_country[i][0];
-    }
-}
-/* Iterating the countries iso code into a variable
-to be used in the code*/
-async function getCountry() {
-    await getCountryisocode();
-
-    html_country = document.getElementById('count').value;
-    for (var v in isocodes) {
-        if (html_country == isocodes[v]) {
-            isocount = v;
-        }
-    }
-}
-
 /* Getting the total test case for each month from the json api*/
 /*var total_month_dict = {}
 async function getTotalCases() {
@@ -185,42 +217,3 @@ async function sumtotaltestmonth() {
     }
     show_sum = sum_month;
 }*/
-
-var listy = [];
-var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-async function getmonthsum() {
-    var resum = 0;
-    for (let i = 0; i < 12; i++) {
-        resum = resum + mont[i];
-        listy[i] = resum
-    }
-    console.log(listy);
-}
-
-/*Getting the value of the total test cases for each country*/
-var sumy = 0;
-var tt_list = [];
-async function getmonthnewcases() {
-    /*await changemonthlengths();*/
-    await getjsondata();
-    await getmonthsum();
-    await getCountry();
-
-    var date_lists = data[isocount]['data'].length;
-    var date_l = data[isocount]['data'];
-    for (let i = 0; i < 12; i++) {
-        for (var z = listy[i]; z < listy[i + 1]; z++) {
-            var lis = data[isocount]['data'][listy[i]];
-            if (data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
-                sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
-                tt_list[i] = sumy;
-                if (z == date_lists - 1) {
-                    break;
-                }
-            } else if (!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
-                continue;
-            }
-        }
-    }
-    console.log(tt_list);
-}
