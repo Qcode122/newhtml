@@ -340,14 +340,14 @@ function getmonthnewcases() {
             break;
           }
 
-          lis = date_l[listy[i]];
+          lis = data[isocount]['data'][listy[i]];
 
-          if (!(data_l[listy[i]]['total_cases_per_million'] in lis)) {
+          if (!(data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
             _context7.next = 20;
             break;
           }
 
-          sumy = sumy + data_l[listy[i]]['total_cases_per_million'];
+          sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
           tt_list[i] = sumy;
 
           if (!(z == date_lists - 1)) {
@@ -362,7 +362,7 @@ function getmonthnewcases() {
           break;
 
         case 20:
-          if (!(!data_l[listy[i]]['total_cases_per_million'] in lis)) {
+          if (!(!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
             _context7.next = 22;
             break;
           }
