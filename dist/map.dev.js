@@ -248,7 +248,7 @@ function getmonthnewcases() {
 
         case 9:
           if (!(i < 12)) {
-            _context7.next = 24;
+            _context7.next = 28;
             break;
           }
 
@@ -256,14 +256,14 @@ function getmonthnewcases() {
 
         case 11:
           if (!(z < listy[i + 1])) {
-            _context7.next = 21;
+            _context7.next = 25;
             break;
           }
 
           lis = data[isocount]['data'][listy[i]];
 
           if (!(data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
-            _context7.next = 18;
+            _context7.next = 20;
             break;
           }
 
@@ -275,22 +275,34 @@ function getmonthnewcases() {
             break;
           }
 
-          return _context7.abrupt("break", 21);
+          return _context7.abrupt("break", 25);
 
         case 18:
+          _context7.next = 22;
+          break;
+
+        case 20:
+          if (!(!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
+            _context7.next = 22;
+            break;
+          }
+
+          return _context7.abrupt("continue", 22);
+
+        case 22:
           z++;
           _context7.next = 11;
           break;
 
-        case 21:
+        case 25:
           i++;
           _context7.next = 9;
           break;
 
-        case 24:
+        case 28:
           console.log(tt_list);
 
-        case 25:
+        case 29:
         case "end":
           return _context7.stop();
       }

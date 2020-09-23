@@ -146,6 +146,8 @@ async function getmonthnewcases() {
                 if (z == date_lists - 1) {
                     break;
                 }
+            } else if (!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
+                continue;
             }
         }
     }
