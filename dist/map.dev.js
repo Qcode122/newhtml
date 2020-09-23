@@ -208,7 +208,7 @@ var sumy = 0;
 var tt_list = [];
 
 function getmonthnewcases() {
-  var date_lists, date_l, i, z, lis;
+  var date_lists, i, z, lis;
   return regeneratorRuntime.async(function getmonthnewcases$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
@@ -226,54 +226,21 @@ function getmonthnewcases() {
 
         case 6:
           date_lists = data[isocount]['data'].length;
-          date_l = data[isocount]['data'];
-          i = 0;
 
-        case 9:
-          if (!(i < 12)) {
-            _context6.next = 24;
-            break;
+          for (i = 0; i < 12; i++) {
+            for (z = listy[i]; z < listy[i + 1]; z++) {
+              lis = data[isocount]['data'][listy[i]];
+
+              if (data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
+                sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
+                tt_list[i] = sumy;
+              }
+            }
           }
 
-          z = listy[i];
-
-        case 11:
-          if (!(z < listy[i + 1])) {
-            _context6.next = 21;
-            break;
-          }
-
-          lis = date_l[listy[i]];
-
-          if (!(date_l[listy[i]]['total_cases_per_million'] in lis)) {
-            _context6.next = 18;
-            break;
-          }
-
-          sumy = sumy + date_l[listy[i]]['total_cases_per_million'];
-          tt_list[i] = sumy;
-
-          if (!(z == date_lists - 1)) {
-            _context6.next = 18;
-            break;
-          }
-
-          return _context6.abrupt("break", 21);
-
-        case 18:
-          z++;
-          _context6.next = 11;
-          break;
-
-        case 21:
-          i++;
-          _context6.next = 9;
-          break;
-
-        case 24:
           console.log(tt_list);
 
-        case 25:
+        case 9:
         case "end":
           return _context6.stop();
       }
