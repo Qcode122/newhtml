@@ -248,7 +248,7 @@ function getmonthnewcases() {
 
         case 9:
           if (!(i < 12)) {
-            _context7.next = 28;
+            _context7.next = 36;
             break;
           }
 
@@ -256,14 +256,16 @@ function getmonthnewcases() {
 
         case 11:
           if (!(z < listy[i + 1])) {
-            _context7.next = 25;
+            _context7.next = 32;
             break;
           }
 
+          _context7.prev = 12;
           lis = data[isocount]['data'][listy[i]];
+          console.log(lis);
 
           if (!(data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
-            _context7.next = 20;
+            _context7.next = 22;
             break;
           }
 
@@ -271,43 +273,52 @@ function getmonthnewcases() {
           tt_list[i] = sumy;
 
           if (!(z == date_lists - 1)) {
-            _context7.next = 18;
+            _context7.next = 20;
             break;
           }
 
-          return _context7.abrupt("break", 25);
-
-        case 18:
-          _context7.next = 22;
-          break;
+          return _context7.abrupt("break", 32);
 
         case 20:
+          _context7.next = 24;
+          break;
+
+        case 22:
           if (!(!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis)) {
-            _context7.next = 22;
+            _context7.next = 24;
             break;
           }
 
-          return _context7.abrupt("continue", 22);
+          return _context7.abrupt("continue", 29);
 
-        case 22:
+        case 24:
+          _context7.next = 29;
+          break;
+
+        case 26:
+          _context7.prev = 26;
+          _context7.t0 = _context7["catch"](12);
+          console.log(_context7.t0);
+
+        case 29:
           z++;
           _context7.next = 11;
           break;
 
-        case 25:
+        case 32:
+          console.log(tt_list);
+
+        case 33:
           i++;
           _context7.next = 9;
           break;
 
-        case 28:
-          console.log(tt_list);
-
-        case 29:
+        case 36:
         case "end":
           return _context7.stop();
       }
     }
-  });
+  }, null, null, [[12, 26]]);
 }
 /* Get value from the api */
 

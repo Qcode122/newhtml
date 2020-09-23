@@ -139,19 +139,24 @@ async function getmonthnewcases() {
     var date_l = data[isocount]['data'];
     for (let i = 0; i < 12; i++) {
         for (var z = listy[i]; z < listy[i + 1]; z++) {
-            var lis = data[isocount]['data'][listy[i]];
-            if (data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
-                sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
-                tt_list[i] = sumy;
-                if (z == date_lists - 1) {
-                    break;
+            try {
+                var lis = data[isocount]['data'][listy[i]];
+                console.log(lis);
+                if (data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
+                    sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
+                    tt_list[i] = sumy;
+                    if (z == date_lists - 1) {
+                        break;
+                    }
+                } else if (!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
+                    continue;
                 }
-            } else if (!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
-                continue;
+            } catch (err) {
+                console.log(err);
             }
         }
+        console.log(tt_list);
     }
-    console.log(tt_list);
 }
 
 /* Get value from the api */
