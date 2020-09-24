@@ -1,6 +1,5 @@
 /* Variables for the code */
 var data, state, date, date_val, numloops, glob_date, mil_case, jsontext, tcases, kk;
-var zero = 0;
 var months = [
     "January", "February",
     "March", "April",
@@ -50,26 +49,30 @@ var month_lengths = {
 /*--------------------------------*/
 
 /* Getting the graph from the json data */
-async function getchart() {
+async function getChart() {
 
     await getmonthnewcases();
 
-    var ctx = document.getElementById('container').getContext('2d');
-    const mychart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: months,
-            datasets: [{
-                label: "#test",
-                data: tt_list,
-                backgroundColor: '#af90ca'
-            }]
-        },
-        options: {
-            maintainAspectRatio: true,
-            responsive: false,
-        }
-    });
+    try {
+        var ctx = document.getElementById('container').getContext('2d');
+        const mychart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: "#test",
+                    data: months,
+                    backgroundColor: '#af90ca'
+                }]
+            },
+            options: {
+                maintainAspectRatio: true,
+                responsive: false,
+            }
+        });
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 /* Getting json data */
@@ -77,7 +80,6 @@ async function getjsondata() {
     state = await fetch('https://covid.ourworldindata.org/data/owid-covid-data.json');
     data = await state.json();
 }
-
 
 /* Getting the country iso code from the csv file*/
 async function getCountryisocode() {
@@ -104,7 +106,7 @@ async function getCountry() {
         }
     }
 }
-
+/* Iterating the month lengths into a list*/
 var listy = [];
 var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 async function getmonthsum() {
@@ -117,25 +119,20 @@ async function getmonthsum() {
 
 /*Getting the value of the total test cases for each country*/
 var sumy = 0;
-var sum_z = 0;
 var tt_list = [];
 async function getmonthnewcases() {
 
-    /*await changemonthlengths();*/
     await getjsondata();
     await getmonthsum();
     await getCountry();
 
     for (let i = 0; i < 12; i++) {
         for (let z = listy[i]; z < listy[i + 1]; z++) {
-            if (data[isocount]['data'][z]['total_cases_per_million'] in data[isocount]['data'][z] &&
-                z <= data[isocount]['data'].length - 1) {
+            if (data[isocount]['data'][z].hasOwnProperty(data[isocount]['data'][z]['total_cases_per_million']) == true) {
                 sumy += data[isocount]['data'][z]['total_cases_per_million']
-                tt_list[i] = sumy;
-            } else {
-                continue;
             }
         }
+        tt_list[i] = sumy;
     }
     console.log(tt_list);
 }

@@ -2,7 +2,6 @@
 
 /* Variables for the code */
 var data, state, date, date_val, numloops, glob_date, mil_case, jsontext, tcases, kk;
-var zero = 0;
 var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var tbb = [];
 var table = [];
@@ -47,9 +46,9 @@ var month_lengths = {
 
 /* Getting the graph from the json data */
 
-function getchart() {
+function getChart() {
   var ctx, mychart;
-  return regeneratorRuntime.async(function getchart$(_context) {
+  return regeneratorRuntime.async(function getChart$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
         case 0:
@@ -57,24 +56,28 @@ function getchart() {
           return regeneratorRuntime.awrap(getmonthnewcases());
 
         case 2:
-          ctx = document.getElementById('container').getContext('2d');
-          mychart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: months,
-              datasets: [{
-                label: "#test",
-                data: tt_list,
-                backgroundColor: '#af90ca'
-              }]
-            },
-            options: {
-              maintainAspectRatio: true,
-              responsive: false
-            }
-          });
+          try {
+            ctx = document.getElementById('container').getContext('2d');
+            mychart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: months,
+                datasets: [{
+                  label: "#test",
+                  data: months,
+                  backgroundColor: '#af90ca'
+                }]
+              },
+              options: {
+                maintainAspectRatio: true,
+                responsive: false
+              }
+            });
+          } catch (err) {
+            console.log(err);
+          }
 
-        case 4:
+        case 3:
         case "end":
           return _context.stop();
       }
@@ -174,6 +177,8 @@ function getCountry() {
     }
   });
 }
+/* Iterating the month lengths into a list*/
+
 
 var listy = [];
 var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -202,7 +207,6 @@ function getmonthsum() {
 
 
 var sumy = 0;
-var sum_z = 0;
 var tt_list = [];
 
 function getmonthnewcases() {
@@ -223,49 +227,19 @@ function getmonthnewcases() {
           return regeneratorRuntime.awrap(getCountry());
 
         case 6:
-          i = 0;
+          for (i = 0; i < 12; i++) {
+            for (z = listy[i]; z < listy[i + 1]; z++) {
+              if (data[isocount]['data'][z].hasOwnProperty(data[isocount]['data'][z]['total_cases_per_million']) == true) {
+                sumy += data[isocount]['data'][z]['total_cases_per_million'];
+              }
+            }
 
-        case 7:
-          if (!(i < 12)) {
-            _context6.next = 22;
-            break;
+            tt_list[i] = sumy;
           }
 
-          z = listy[i];
-
-        case 9:
-          if (!(z < listy[i + 1])) {
-            _context6.next = 19;
-            break;
-          }
-
-          if (!(data[isocount]['data'][z]['total_cases_per_million'] in data[isocount]['data'][z] && z <= data[isocount]['data'].length - 1)) {
-            _context6.next = 15;
-            break;
-          }
-
-          sumy += data[isocount]['data'][z]['total_cases_per_million'];
-          tt_list[i] = sumy;
-          _context6.next = 16;
-          break;
-
-        case 15:
-          return _context6.abrupt("continue", 16);
-
-        case 16:
-          z++;
-          _context6.next = 9;
-          break;
-
-        case 19:
-          i++;
-          _context6.next = 7;
-          break;
-
-        case 22:
           console.log(tt_list);
 
-        case 23:
+        case 8:
         case "end":
           return _context6.stop();
       }
