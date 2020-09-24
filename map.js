@@ -19,7 +19,7 @@ var isocodes = {};
 const table_country = new Array(1);
 var isocount, insel;
 var month = new Array();
-var month_number = {
+/*var month_number = {
     "January": 0,
     "February": 1,
     "March": 2,
@@ -46,14 +46,8 @@ var month_lengths = {
         "October": 31,
         "November": 30,
         "December": 31
-    }
-    /*--------------------------------*/
-
-async function rel() {
-    setTimeout(() => {
-        document.location.reload();
-    }, 30000);
-}
+    }*/
+/*--------------------------------*/
 
 /* Getting the graph from the json data */
 async function getchart() {
@@ -66,10 +60,6 @@ async function getchart() {
         data: {
             labels: months,
             datasets: [{
-                barThickness: 6,
-                barPercentage: 0.5,
-                maxBarThickness: 8,
-                minBarLength: 2,
                 label: "#test",
                 data: tt_list,
                 backgroundColor: '#af90ca'
@@ -127,6 +117,7 @@ async function getmonthsum() {
 
 /*Getting the value of the total test cases for each country*/
 var sumy = 0;
+var sum_z = 0;
 var tt_list = [];
 async function getmonthnewcases() {
 
@@ -135,28 +126,18 @@ async function getmonthnewcases() {
     await getmonthsum();
     await getCountry();
 
-    var date_lists = data[isocount]['data'].length;
-    var date_l = data[isocount]['data'];
     for (let i = 0; i < 12; i++) {
-        for (var z = listy[i]; z < listy[i + 1]; z++) {
-            try {
-                var lis = data[isocount]['data'][listy[i]];
-                console.log(lis);
-                if (data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
-                    sumy = sumy + data[isocount]['data'][listy[i]]['total_cases_per_million'];
-                    tt_list[i] = sumy;
-                    if (z == date_lists - 1) {
-                        break;
-                    }
-                } else if (!data[isocount]['data'][listy[i]]['total_cases_per_million'] in lis) {
-                    continue;
-                }
-            } catch (err) {
-                console.log(err);
+        for (let z = listy[i]; z < listy[i + 1]; z++) {
+            if (data[isocount]['data'][z]['total_cases_per_million'] in data[isocount]['data'][z] &&
+                z <= data[isocount]['data'].length - 1) {
+                sumy += data[isocount]['data'][z]['total_cases_per_million']
+                tt_list[i] = sumy;
+            } else {
+                continue;
             }
         }
-        console.log(tt_list);
     }
+    console.log(tt_list);
 }
 
 /* Get value from the api */
