@@ -138,19 +138,17 @@ async function getmonthnewcases() {
     try {
         for (let i = 0; i < 12; i++) {
             for (let z = listy[i]; z <= listy[i + 1]; z++) {
-                for (key in data[isocount]["data"][z]) {
-                    if (data[isocount]["data"][z].hasOwnProperty(key) == true) {
-                        sumy += Number(data[isocount]["data"][z]["total_cases_per_million"]);
-                        tt_list[i] = sumy;
-                    } else if (typeof data[isocount]["data"][z]["total_cases_per_million"] === "undefined") {
-                        data[isocount]["data"][z]["total_cases_per_million"] = sumy;
-                        continue;
-                    }
-                    if (z == data[isocount]["data"].length - 1) {
-                        break;
-                    }
-                    console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
+                if (data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == true) {
+                    sumy += Number(data[isocount]["data"][z]["total_cases_per_million"]);
+                    tt_list[i] = sumy;
+                } else if (data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == false) {
+                    data[isocount]["data"][z]["total_cases_per_million"] = sumy;
+                    continue;
                 }
+                if (z == data[isocount]["data"].length - 1) {
+                    break;
+                }
+                console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
             }
         }
         console.log(tt_list);

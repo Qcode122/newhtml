@@ -244,7 +244,7 @@ function getmonthnewcases() {
 
         case 8:
           if (!(i < 12)) {
-            _context6.next = 33;
+            _context6.next = 28;
             break;
           }
 
@@ -252,78 +252,66 @@ function getmonthnewcases() {
 
         case 10:
           if (!(z <= listy[i + 1])) {
-            _context6.next = 30;
+            _context6.next = 25;
             break;
           }
 
-          _context6.t0 = regeneratorRuntime.keys(data[isocount]["data"][z]);
-
-        case 12:
-          if ((_context6.t1 = _context6.t0()).done) {
-            _context6.next = 27;
-            break;
-          }
-
-          key = _context6.t1.value;
-
-          if (!(data[isocount]["data"][z].hasOwnProperty(key) == true)) {
-            _context6.next = 19;
+          if (!(data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == true)) {
+            _context6.next = 16;
             break;
           }
 
           sumy += Number(data[isocount]["data"][z]["total_cases_per_million"]);
           tt_list[i] = sumy;
-          _context6.next = 22;
+          _context6.next = 19;
           break;
 
-        case 19:
-          if (!(typeof data[isocount]["data"][z]["total_cases_per_million"] === "undefined")) {
-            _context6.next = 22;
+        case 16:
+          if (!(data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == false)) {
+            _context6.next = 19;
             break;
           }
 
           data[isocount]["data"][z]["total_cases_per_million"] = sumy;
-          return _context6.abrupt("continue", 12);
+          return _context6.abrupt("continue", 22);
 
-        case 22:
+        case 19:
           if (!(z == data[isocount]["data"].length - 1)) {
-            _context6.next = 24;
+            _context6.next = 21;
             break;
           }
 
-          return _context6.abrupt("break", 27);
+          return _context6.abrupt("break", 25);
 
-        case 24:
+        case 21:
           console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
-          _context6.next = 12;
-          break;
 
-        case 27:
+        case 22:
           z++;
           _context6.next = 10;
           break;
 
-        case 30:
+        case 25:
           i++;
           _context6.next = 8;
           break;
 
-        case 33:
+        case 28:
           console.log(tt_list);
-          _context6.next = 39;
+          _context6.next = 34;
           break;
 
-        case 36:
-          _context6.prev = 36;
-          _context6.t2 = _context6["catch"](6);
-          console.log(_context6.t2);
+        case 31:
+          _context6.prev = 31;
+          _context6.t0 = _context6["catch"](6);
+          console.log(_context6.t0);
 
-        case 39:
+        case 34:
         case "end":
           return _context6.stop();
       }
     }
-  }, null, null, [[6, 36]]);
+  }, null, null, [[6, 31]]);
 }
 /* Get value from the api */
 
