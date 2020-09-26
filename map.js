@@ -62,7 +62,7 @@ async function getChart() {
                 labels: months,
                 datasets: [{
                     fill: false,
-                    lineTension: 0.01,
+                    lineTension: 0,
                     backgroundColor: "whitesmoke",
                     borderColr: "blue",
                     pointRadius: 2.1,
