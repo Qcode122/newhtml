@@ -63,9 +63,13 @@ function getChart() {
               data: {
                 labels: months,
                 datasets: [{
+                  fill: false,
+                  lineTension: 0.01,
+                  backgroundColor: "whitesmoke",
+                  borderColr: "blue",
+                  pointRadius: 2.1,
                   label: "#test",
-                  data: months,
-                  backgroundColor: '#af90ca'
+                  data: tt_list
                 }]
               },
               options: {
@@ -92,23 +96,31 @@ function getjsondata() {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
+          _context2.prev = 0;
+          _context2.next = 3;
           return regeneratorRuntime.awrap(fetch('https://covid.ourworldindata.org/data/owid-covid-data.json'));
 
-        case 2:
+        case 3:
           state = _context2.sent;
-          _context2.next = 5;
+          _context2.next = 6;
           return regeneratorRuntime.awrap(state.json());
 
-        case 5:
-          data = _context2.sent;
-
         case 6:
+          data = _context2.sent;
+          _context2.next = 12;
+          break;
+
+        case 9:
+          _context2.prev = 9;
+          _context2.t0 = _context2["catch"](0);
+          console.log(_context2.t0);
+
+        case 12:
         case "end":
           return _context2.stop();
       }
     }
-  });
+  }, null, null, [[0, 9]]);
 }
 /* Getting the country iso code from the csv file*/
 
@@ -181,7 +193,7 @@ function getCountry() {
 
 
 var listy = [];
-var mont = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+var mont = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 function getmonthsum() {
   var resum, i;
@@ -191,7 +203,7 @@ function getmonthsum() {
         case 0:
           resum = 0;
 
-          for (i = 0; i < 12; i++) {
+          for (i = 0; i <= 12; i++) {
             resum = resum + mont[i];
             listy[i] = resum;
           }
@@ -216,35 +228,102 @@ function getmonthnewcases() {
       switch (_context6.prev = _context6.next) {
         case 0:
           _context6.next = 2;
-          return regeneratorRuntime.awrap(getjsondata());
+          return regeneratorRuntime.awrap(getmonthsum());
 
         case 2:
           _context6.next = 4;
-          return regeneratorRuntime.awrap(getmonthsum());
+          return regeneratorRuntime.awrap(getjsondata());
 
         case 4:
           _context6.next = 6;
           return regeneratorRuntime.awrap(getCountry());
 
         case 6:
-          for (i = 0; i < 12; i++) {
-            for (z = listy[i]; z < listy[i + 1]; z++) {
-              if (data[isocount]['data'][z].hasOwnProperty(data[isocount]['data'][z]['total_cases_per_million']) == true) {
-                sumy += data[isocount]['data'][z]['total_cases_per_million'];
-              }
-            }
-
-            tt_list[i] = sumy;
-          }
-
-          console.log(tt_list);
+          _context6.prev = 6;
+          i = 0;
 
         case 8:
+          if (!(i < 12)) {
+            _context6.next = 33;
+            break;
+          }
+
+          z = listy[i];
+
+        case 10:
+          if (!(z <= listy[i + 1])) {
+            _context6.next = 30;
+            break;
+          }
+
+          _context6.t0 = regeneratorRuntime.keys(data[isocount]["data"][z]);
+
+        case 12:
+          if ((_context6.t1 = _context6.t0()).done) {
+            _context6.next = 27;
+            break;
+          }
+
+          key = _context6.t1.value;
+
+          if (!(data[isocount]["data"][z].hasOwnProperty(key) == true)) {
+            _context6.next = 19;
+            break;
+          }
+
+          sumy += Number(data[isocount]["data"][z]["total_cases_per_million"]);
+          tt_list[i] = sumy;
+          _context6.next = 22;
+          break;
+
+        case 19:
+          if (!(typeof data[isocount]["data"][z]["total_cases_per_million"] === "undefined")) {
+            _context6.next = 22;
+            break;
+          }
+
+          data[isocount]["data"][z]["total_cases_per_million"] = sumy;
+          return _context6.abrupt("continue", 12);
+
+        case 22:
+          if (!(z == data[isocount]["data"].length - 1)) {
+            _context6.next = 24;
+            break;
+          }
+
+          return _context6.abrupt("break", 27);
+
+        case 24:
+          console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
+          _context6.next = 12;
+          break;
+
+        case 27:
+          z++;
+          _context6.next = 10;
+          break;
+
+        case 30:
+          i++;
+          _context6.next = 8;
+          break;
+
+        case 33:
+          console.log(tt_list);
+          _context6.next = 39;
+          break;
+
+        case 36:
+          _context6.prev = 36;
+          _context6.t2 = _context6["catch"](6);
+          console.log(_context6.t2);
+
+        case 39:
         case "end":
           return _context6.stop();
       }
     }
-  });
+  }, null, null, [[6, 36]]);
 }
 /* Get value from the api */
 
