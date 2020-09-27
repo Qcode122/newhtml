@@ -18,35 +18,7 @@ var isocodes = {};
 const table_country = new Array(1);
 var isocount, insel;
 var month = new Array();
-/*var month_number = {
-    "January": 0,
-    "February": 1,
-    "March": 2,
-    "April": 3,
-    "May": 4,
-    "June": 5,
-    "July": 6,
-    "August": 7,
-    "September": 8,
-    "October": 9,
-    "November": 10,
-    "December": 11
-};
-var month_lengths = {
-        "January": 31,
-        "February": 29,
-        "March": 31,
-        "April": 30,
-        "May": 31,
-        "June": 30,
-        "July": 31,
-        "August": 31,
-        "September": 30,
-        "October": 31,
-        "November": 30,
-        "December": 31
-    }*/
-/*--------------------------------*/
+
 
 
 /* Getting the graph from the json data */
@@ -81,6 +53,7 @@ async function getChart() {
 }
 
 /* Getting json data */
+var state, data;
 async function getjsondata() {
     try {
         state = await fetch('https://covid.ourworldindata.org/data/owid-covid-data.json');
@@ -127,7 +100,6 @@ async function getmonthsum() {
 }
 
 /*Getting the value of the total test cases for each country*/
-var sumy = 0;
 var tt_list = [];
 async function getmonthnewcases() {
 
@@ -137,6 +109,7 @@ async function getmonthnewcases() {
 
     try {
         for (let i = 0; i < 12; i++) {
+            var sumy = 0;
             for (let z = listy[i]; z <= listy[i + 1]; z++) {
                 if (data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == true) {
                     sumy += Number(data[isocount]["data"][z]["total_cases_per_million"]);
@@ -157,75 +130,3 @@ async function getmonthnewcases() {
     }
 
 }
-
-/* Get value from the api */
-/*async function getjsonapi() {
-    await getjsondata();
-    await getCountry();
-    await changemonthlengths();
-    try {
-        for (date_val; date_val <= numloops; date_val++) {
-            jsontext = data[isocount]["data"][date_val]["date"];
-            table.push(jsontext);
-        }
-    } catch (err) {
-        console.log(err);
-    }
-}*/
-
-/*var tble = [];
-var sum = 0;
-var vvv;
-var obb;
-*/
-/* Getting the month and dates from the json api*/
-/*async function changemonthlengths() {
-    await changemonth();
-    for (v in month_number) {
-        if (insel == v) {
-            for (vv in month_lengths) {
-                if (insel == vv) {
-                    for (let i = month_number[v] - 1; i >= 0; i--) {
-                        obb = Object.keys(month_lengths)[i];
-                        vvv = month_lengths[obb];
-                        sum = sum + vvv;
-                    }
-                    date_val = sum;
-                    numloops = date_val + month_lengths[vv];
-                }
-            }
-        }
-    }
-    console.log(insel, numloops, date_val);
-}*/
-
-/* Get value from the select element in html */
-/*async function changemonth() {
-    var getopt = document.getElementById('dropmonth');
-    insel = getopt.options[getopt.selectedIndex].textContent;
-}*/
-
-/* Getting the total test case for each month from the json api*/
-/*var total_month_dict = {}
-async function getTotalCases() {
-    await getCountry();
-    await changemonthlengths();
-    await getjsondata();
-
-    for (date_val; date_val <= numloops; date_val++) {
-        mil_case = data[isocount]['data'][date_val]['total_cases_per_million'];
-        mill_c[date_val] = mil_case;
-    }
-    console.log(mill_c);
-}*/
-
-/* Getting the sum of data from the api for each country*/
-/*var sum_month = 0;
-var show_sum;
-async function sumtotaltestmonth() {
-    await getTotalCases()
-    for (let i = 0; i < mill_c.length; i++) {
-        sum_month = sum_month + mill_c[i];
-    }
-    show_sum = sum_month;
-}*/

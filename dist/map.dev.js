@@ -13,37 +13,6 @@ var isocodes = {};
 var table_country = new Array(1);
 var isocount, insel;
 var month = new Array();
-/*var month_number = {
-    "January": 0,
-    "February": 1,
-    "March": 2,
-    "April": 3,
-    "May": 4,
-    "June": 5,
-    "July": 6,
-    "August": 7,
-    "September": 8,
-    "October": 9,
-    "November": 10,
-    "December": 11
-};
-var month_lengths = {
-        "January": 31,
-        "February": 29,
-        "March": 31,
-        "April": 30,
-        "May": 31,
-        "June": 30,
-        "July": 31,
-        "August": 31,
-        "September": 30,
-        "October": 31,
-        "November": 30,
-        "December": 31
-    }*/
-
-/*--------------------------------*/
-
 /* Getting the graph from the json data */
 
 function getChart() {
@@ -90,6 +59,8 @@ function getChart() {
 }
 /* Getting json data */
 
+
+var state, data;
 
 function getjsondata() {
   return regeneratorRuntime.async(function getjsondata$(_context2) {
@@ -218,11 +189,10 @@ function getmonthsum() {
 /*Getting the value of the total test cases for each country*/
 
 
-var sumy = 0;
 var tt_list = [];
 
 function getmonthnewcases() {
-  var i, z;
+  var i, sumy, z;
   return regeneratorRuntime.async(function getmonthnewcases$(_context6) {
     while (1) {
       switch (_context6.prev = _context6.next) {
@@ -244,149 +214,73 @@ function getmonthnewcases() {
 
         case 8:
           if (!(i < 12)) {
-            _context6.next = 28;
+            _context6.next = 29;
             break;
           }
 
+          sumy = 0;
           z = listy[i];
 
-        case 10:
+        case 11:
           if (!(z <= listy[i + 1])) {
-            _context6.next = 25;
+            _context6.next = 26;
             break;
           }
 
           if (!(data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == true)) {
-            _context6.next = 16;
+            _context6.next = 17;
             break;
           }
 
           sumy += Number(data[isocount]["data"][z]["total_cases_per_million"]);
           tt_list[i] = sumy;
-          _context6.next = 19;
+          _context6.next = 20;
           break;
 
-        case 16:
+        case 17:
           if (!(data[isocount]["data"][z].hasOwnProperty("total_cases_per_million") == false)) {
-            _context6.next = 19;
+            _context6.next = 20;
             break;
           }
 
           data[isocount]["data"][z]["total_cases_per_million"] = sumy;
-          return _context6.abrupt("continue", 22);
+          return _context6.abrupt("continue", 23);
 
-        case 19:
+        case 20:
           if (!(z == data[isocount]["data"].length - 1)) {
-            _context6.next = 21;
+            _context6.next = 22;
             break;
           }
 
-          return _context6.abrupt("break", 25);
-
-        case 21:
-          console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
+          return _context6.abrupt("break", 26);
 
         case 22:
+          console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
+
+        case 23:
           z++;
-          _context6.next = 10;
+          _context6.next = 11;
           break;
 
-        case 25:
+        case 26:
           i++;
           _context6.next = 8;
           break;
 
-        case 28:
+        case 29:
           console.log(tt_list);
-          _context6.next = 34;
+          _context6.next = 35;
           break;
 
-        case 31:
-          _context6.prev = 31;
+        case 32:
+          _context6.prev = 32;
           _context6.t0 = _context6["catch"](6);
           console.log(_context6.t0);
 
-        case 34:
+        case 35:
         case "end":
           return _context6.stop();
       }
     }
-  }, null, null, [[6, 31]]);
+  }, null, null, [[6, 32]]);
 }
-/* Get value from the api */
-
-/*async function getjsonapi() {
-    await getjsondata();
-    await getCountry();
-    await changemonthlengths();
-    try {
-        for (date_val; date_val <= numloops; date_val++) {
-            jsontext = data[isocount]["data"][date_val]["date"];
-            table.push(jsontext);
-        }
-    } catch (err) {
-        console.log(err);
-    }
-}*/
-
-/*var tble = [];
-var sum = 0;
-var vvv;
-var obb;
-*/
-
-/* Getting the month and dates from the json api*/
-
-/*async function changemonthlengths() {
-    await changemonth();
-    for (v in month_number) {
-        if (insel == v) {
-            for (vv in month_lengths) {
-                if (insel == vv) {
-                    for (let i = month_number[v] - 1; i >= 0; i--) {
-                        obb = Object.keys(month_lengths)[i];
-                        vvv = month_lengths[obb];
-                        sum = sum + vvv;
-                    }
-                    date_val = sum;
-                    numloops = date_val + month_lengths[vv];
-                }
-            }
-        }
-    }
-    console.log(insel, numloops, date_val);
-}*/
-
-/* Get value from the select element in html */
-
-/*async function changemonth() {
-    var getopt = document.getElementById('dropmonth');
-    insel = getopt.options[getopt.selectedIndex].textContent;
-}*/
-
-/* Getting the total test case for each month from the json api*/
-
-/*var total_month_dict = {}
-async function getTotalCases() {
-    await getCountry();
-    await changemonthlengths();
-    await getjsondata();
-
-    for (date_val; date_val <= numloops; date_val++) {
-        mil_case = data[isocount]['data'][date_val]['total_cases_per_million'];
-        mill_c[date_val] = mil_case;
-    }
-    console.log(mill_c);
-}*/
-
-/* Getting the sum of data from the api for each country*/
-
-/*var sum_month = 0;
-var show_sum;
-async function sumtotaltestmonth() {
-    await getTotalCases()
-    for (let i = 0; i < mill_c.length; i++) {
-        sum_month = sum_month + mill_c[i];
-    }
-    show_sum = sum_month;
-}*/
