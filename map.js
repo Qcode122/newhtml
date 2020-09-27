@@ -34,11 +34,10 @@ async function getChart() {
                 labels: months,
                 datasets: [{
                     fill: false,
-                    lineTension: 0,
                     backgroundColor: "whitesmoke",
                     borderColr: "blue",
                     pointRadius: 2.1,
-                    label: "#test",
+                    label: "Total case number",
                     data: tt_list,
                 }]
             },
@@ -120,6 +119,10 @@ async function getmonthnewcases() {
                 }
                 if (z == data[isocount]["data"].length - 1) {
                     break;
+                }
+                if (z == listy[i + 1]) {
+                    sumy = 0;
+                    continue;
                 }
                 console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
             }

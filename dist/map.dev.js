@@ -33,11 +33,10 @@ function getChart() {
                 labels: months,
                 datasets: [{
                   fill: false,
-                  lineTension: 0,
                   backgroundColor: "whitesmoke",
                   borderColr: "blue",
                   pointRadius: 2.1,
-                  label: "#test",
+                  label: "Total case number",
                   data: tt_list
                 }]
               },
@@ -214,7 +213,7 @@ function getmonthnewcases() {
 
         case 8:
           if (!(i < 12)) {
-            _context6.next = 29;
+            _context6.next = 32;
             break;
           }
 
@@ -223,7 +222,7 @@ function getmonthnewcases() {
 
         case 11:
           if (!(z <= listy[i + 1])) {
-            _context6.next = 26;
+            _context6.next = 29;
             break;
           }
 
@@ -244,7 +243,7 @@ function getmonthnewcases() {
           }
 
           data[isocount]["data"][z]["total_cases_per_million"] = sumy;
-          return _context6.abrupt("continue", 23);
+          return _context6.abrupt("continue", 26);
 
         case 20:
           if (!(z == data[isocount]["data"].length - 1)) {
@@ -252,35 +251,44 @@ function getmonthnewcases() {
             break;
           }
 
-          return _context6.abrupt("break", 26);
+          return _context6.abrupt("break", 29);
 
         case 22:
+          if (!(z == listy[i + 1])) {
+            _context6.next = 25;
+            break;
+          }
+
+          sumy = 0;
+          return _context6.abrupt("continue", 26);
+
+        case 25:
           console.log(data[isocount]["data"][z]["date"], sumy, data[isocount]["data"][z]["total_cases_per_million"]);
 
-        case 23:
+        case 26:
           z++;
           _context6.next = 11;
           break;
 
-        case 26:
+        case 29:
           i++;
           _context6.next = 8;
           break;
 
-        case 29:
+        case 32:
           console.log(tt_list);
-          _context6.next = 35;
+          _context6.next = 38;
           break;
 
-        case 32:
-          _context6.prev = 32;
+        case 35:
+          _context6.prev = 35;
           _context6.t0 = _context6["catch"](6);
           console.log(_context6.t0);
 
-        case 35:
+        case 38:
         case "end":
           return _context6.stop();
       }
     }
-  }, null, null, [[6, 32]]);
+  }, null, null, [[6, 35]]);
 }
